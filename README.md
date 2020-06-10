@@ -6,7 +6,8 @@ A simple side-scrolling game where the player controls a bird to fly between pip
 
 
 # WIREFRAME  
-*draw on paper - Upload img*
+![wireframe for game screen] (/img/001-wireframe.png "Game Screen")
+![wireframe for collision mechanics] (/img/002-wireframe.png "Collision Mechanics")
 
 # TECHNOLOGY
  * HTML/CSS on canvas
