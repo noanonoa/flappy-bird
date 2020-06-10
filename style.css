@@ -1,0 +1,26 @@
+* {
+    font-family: helvetica, sans-serif;
+}
+body {
+    background-color: #483d8b;
+}
+
+/********************
+* video game screen *
+********************/
+.container {
+    background-color: #bada55;
+}
+    .game-title {
+    /***** Flappy Bird *****/
+        text-align: center;
+    }
+    .game-screen {
+        background-color: #ffc0cb;
+        width: 800px;
+        height: 600px;
+        margin: 0 auto;
+    }
+        canvas {
+            background-color: #000;
+        }
