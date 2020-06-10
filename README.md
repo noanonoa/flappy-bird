@@ -6,7 +6,7 @@ A simple side-scrolling game where the player controls a bird to fly between pip
 
 
 # WIREFRAME  
-**draw on paper - Upload img**
+*draw on paper - Upload img*
 
 # TECHNOLOGY
  * HTML/CSS on canvas
@@ -17,31 +17,76 @@ A simple side-scrolling game where the player controls a bird to fly between pip
  * Pipes (Google Images) ??? - TBD
 
 # MVP
-- start the game with a 'press button'
-— bird falls default to gravity
-— bird flies to keydown ‘spacebar’
-— pipes spawn top and bottom (rectangles) and scroll to the left
-— track score
-- end game on collision
+ * start the game with a 'press button'
+ * bird falls default to gravity
+ * bird flies to keydown ‘spacebar’
+ * pipes spawn top and bottom (rectangles) and scroll to the left
+ * track score
+ * end game on collision
 
 # STRETCH GOALS
-- animate bird
-- add sounds for scoring, flying, and collision
-— a customized theme
-— game is animated while waiting for player to start game
-— night time / day time
-- add a running time to display
-- make the game web responsive
-
-# ADDITIONAL TECHNOLOGY
-scratch (maybe?)
-
-### foreshadowing challenges
-pipe spawning 
-transition animation
-x/y position
+ * animate bird
+ * add sounds for scoring, flying, and collision
+ * a customized theme
+ * game is animated while waiting for player to start game
+ * night time / day time
+ * add a running time to display
+ * make the game web responsive
 
 # GAMEPLAN
+---
+## HTML
+ - [ ] container for gaming screen
+ - [ ] game title
+ - [ ] game screen `<canvas>`
+
+## CSS
+ - [ ] *centered* game title
+ - [ ] *centered* game screen
+
+## JavaScript
+### Pieces I need
+ - [ ] specify canvas size
+ - [ ] bird (bonus: [ ] image)
+ - [ ] top pipe (bonus: [ ] image)
+ - [ ] constant gap between pipes
+ - [ ] bottom pipe (bonus: [ ] image)
+ - [ ] score tracker
+ - [ ] bonus: background image
+ - [ ] bonus: sounds on flying, collision, and scoring
+### Functions I need
+ - [ ] start game
+    - [ ] start on keyDown
+    - [ ] spawn pipes on intervals, constant gap
+ - [ ] bird's movement
+    - [ ] gravity: bird's y-coordinate increases to fall
+    - [ ] flying: bird's y-coordinate decreases to fly on keydown
+        - [ ] eventListener keydown seems relevant
+        - [ ] bonus: flying sound
+    - [ ] bonus: rotate bird upward each time it flies (smells like a challenge)
+ - [ ] a drawing function to animate game
+    - [ ] pipes' x-coordinates decrease to scroll left
+        - [ ] increment score by 1 upon passing pipe
+        - [ ] bonus: sound on passing pipe
+    - [ ] pipes' y-coordinates are generated randomly
+    - [ ] bonus: draw background
+    - [ ] draw bird
+ - [ ] Game Over
+    - [ ] collision with pipes
+    - [ ] collision with floor
+    - [ ] cut screen ?
+    - [ ] restart game on keydown
+        - [ ] display top score
+        - [ ] reset score on start game
 
 
-### final thoughts
+# ADDITIONAL TECHNOLOGY
+ * scratch (maybe?)
+
+### FORESHADOWING CHALLENGES
+ * pipe spawning 
+ * transition animation
+ * x/y position
+
+# FINAL THOUGHTS
+*any progress/working comments*
