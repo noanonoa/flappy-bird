@@ -16,11 +16,15 @@ body {
         text-align: center;
     }
     .game-screen {
-        background-color: #ffc0cb;
-        width: 800px;
-        height: 600px;
+        background-color: rgb(69, 184, 194);
+        width: 324px;
+        height: 576px;
         margin: 0 auto;
     }
         canvas {
-            background-color: #000;
+            /* background-color: #000; */
+            display: block;
+            width: 324px;
+            height: 576px;
+            margin: 0 auto;
         }

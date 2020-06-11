@@ -37,18 +37,18 @@ A simple side-scrolling game where the player controls a bird to fly between pip
 # GAMEPLAN
 ---
 ## HTML
- - [ ] container for gaming screen
- - [ ] game title
- - [ ] game screen `<canvas>`
+ - [X] container for gaming screen
+ - [X] game title
+ - [X] game screen `<canvas>`
 
 ## CSS
- - [ ] *centered* game title
- - [ ] *centered* game screen
+ - [X] *centered* game title
+ - [X] *centered* game screen
 
 ## JavaScript
 ### Pieces I need
- - [ ] specify canvas size
- - [ ] bird (bonus: [ ] image)
+ - [X] specify canvas size
+ - [X] bird (bonus: [ ] image)
  - [ ] top pipe (bonus: [ ] image)
  - [ ] constant gap between pipes
  - [ ] bottom pipe (bonus: [ ] image)
@@ -71,7 +71,7 @@ A simple side-scrolling game where the player controls a bird to fly between pip
         - [ ] bonus: sound on passing pipe
     - [ ] pipes' y-coordinates are generated randomly
     - [ ] bonus: draw background
-    - [ ] draw bird
+    - [X] draw bird
  - [ ] Game Over
     - [ ] collision with pipes
     - [ ] collision with floor
