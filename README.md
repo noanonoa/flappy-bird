@@ -14,8 +14,10 @@ A simple side-scrolling game where the player controls a bird to fly between pip
  * JavaScript  game logic
 
 # ASSETS
-![flappy bird theme](/img/og-theme.png) (src: google images)
-![flappy bird theme v2](/img/og-theme-2.png) (src: https://www.spriters-resource.com/fullview/59894/)
+![flappy bird theme](/img/og-theme.png)  
+(src: google images)
+![flappy bird theme v2](/img/og-theme-2.png)  
+(src: https://www.spriters-resource.com/fullview/59894/)
 
 # MVP
  * start the game with a 'press button'
@@ -48,13 +50,14 @@ A simple side-scrolling game where the player controls a bird to fly between pip
 ## JavaScript
 ### Pieces I need
  - [X] specify canvas size
- - [X] bird 
+ - [X] draw bird 
       - [X] bonus: image)
  - [ ] top pipe (bonus: [ ] image)
  - [ ] constant gap between pipes
  - [ ] bottom pipe (bonus: [ ] image)
  - [ ] score tracker
- - [ ] bonus: background image
+ - [X] bonus: background image
+ - [ ] bonus: ground image
  - [ ] bonus: sounds on flying, collision, and scoring
 ### Functions I need
  - [ ] start game
@@ -63,18 +66,18 @@ A simple side-scrolling game where the player controls a bird to fly between pip
       - [ ] if statement triggering at x-coordinate
  - [ ] bird's movement
     - [ ] gravity: bird's y-coordinate increases to fall
-    - [ ] flying: bird's y-coordinate decreases to fly on keydown
+    - [ ] flying: bird's y-coordinate decreases to fly on 'click'
         - [ ] eventListener 'click'
         - [ ] bonus: flying sound
         - [ ] animation object / array of images to flip through
     - [ ] bonus: rotate bird upward each time it flies (smells like a challenge)
- - [ ] a drawing function to animate game
-   - [ ] place images and loop
+ - [X] a drawing function to animate game
+   - [X] place images and loop
     - [ ] pipes' x-coordinates decrease to scroll left
         - [ ] increment score by 1 upon passing pipe
         - [ ] bonus: sound on passing pipe
     - [ ] pipes' y-coordinates are generated randomly
-    - [ ] bonus: draw background
+    - [X] bonus: draw background
     - [X] draw bird
  - [ ] Game Over
     - [ ] collision with pipes
