@@ -1,4 +1,4 @@
-console.log('get gravity to work 🚀')
+console.log('check for collision 🚀')
 
 /************************
 ***** DECLARATIONS: *****
@@ -67,7 +67,7 @@ ground = {
     height: 112,
     //x,y coordinates of where image should be drawn on canvas
     x: 0,
-    y:cvs.height - 112,
+    y:cvs.height - 100,
     w:224,
     h:112,
     render: function() {
@@ -77,6 +77,7 @@ ground = {
     }
 }
 //bonus: let bird be an img
+//original bird
 bird = {
     //object's key-value properties pinpointing its location
     //animate bird
@@ -93,10 +94,27 @@ bird = {
     render: function() {
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x,this.y,this.w,this.h)
     },
+    fly: 5.8,
     flap: function() {
-        console.log('🐦 flies')
+        console.log('🐦')
+        //bird flies
+        this.velocity = - this.fly
+    },
+    //gravity increments rate of velocity @ 50-60 times per sec.
+    gravity: .35,
+    //rate of velocity = pixels the bird will drop in a frame
+    velocity: 0,
+    //function checks gameState and updates bird's position
+    position: function() {
+        if (gameState.current == gameState.getReady) {
+            this.y = 160
+        } else {
+            this.velocity += this.gravity
+            this.y += this.velocity
+        }
     }
 }
+//bird v2: blue
 bird2 = {
     //object's key-value properties pinpointing its location
     imgX: 87,
@@ -112,8 +130,23 @@ bird2 = {
     render: function() {
         ctx.drawImage(theme2, this.imgX,this.imgY,this.width,this.height, this.x,this.y,this.w,this.h)
     },
+    fly: 5.8,
     flap: function() {
-        console.log('🐦 flies')
+        console.log('🐦🐦')
+        this.velocity = - this.fly
+    },
+    //gravity increments rate of velocity @ 50-60 times per sec.
+    gravity: .35,
+    //rate of velocity = pixels the bird will drop in a frame
+    velocity: 0,
+    //checks gameState and updates bird's position
+    position: function() {
+        if (gameState.current == gameState.getReady) {
+            this.y = 160
+        } else {
+            this.velocity += this.gravity
+            this.y += this.velocity
+        }
     }
 }
 getReady = {
@@ -169,6 +202,7 @@ let draw = () => {
     bird.render()
     getReady.render()
     gameOver.render()
+    bird.position()
 }
 //animation handler
 let loop = () => {
@@ -182,6 +216,7 @@ loop()
 /*************************
 ***** EVENT HANDLERS ***** 
 *************************/
+//on mouse click // tap screen
 cvs.addEventListener('click', (e) => {
     //if ready screen >> go to play state
     if (gameState.current == gameState.getReady) {
@@ -189,29 +224,31 @@ cvs.addEventListener('click', (e) => {
     }
     //if play state >> bird keeps flying
     if (gameState.current == gameState.play) {
-        bird2.flap()
+        bird.flap()
     }
     //if game over screen >> go to ready screen
     if (gameState.current == gameState.gameOver) {
         gameState.current = gameState.getReady
     }
 })
+//on spacebar
 document.body.addEventListener('keydown', (e) => {
     //if ready screen >> go to play state
-    if (gameState.current == gameState.getReady) {
-        gameState.current = gameState.play
-    }
-    //if play state >> bird keeps flying
-    if (gameState.current == gameState.play) {
-        bird2.flap()
-        console.log(e.keyCode)
-    }
-    //if game over screen >> go to ready screen
-    if (gameState.current == gameState.gameOver) {
-        gameState.current = gameState.getReady
+    if (e.keyCode == 32) {
+        if (gameState.current == gameState.getReady) {
+            gameState.current = gameState.play
+        }
+        //if play state >> bird keeps flying
+        if (gameState.current == gameState.play) {
+            bird.flap()
+            console.log(e.keyCode)
+        }
+        //if game over screen >> go to ready screen
+        if (gameState.current == gameState.gameOver) {
+            gameState.current = gameState.getReady
+        }
     }
 })
-
 
 /******************
 ***** ARCHIVE *****

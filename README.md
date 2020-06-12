@@ -62,14 +62,16 @@ A simple side-scrolling game where the player controls a bird to fly between pip
  - [X] bonus: ground image
  - [ ] bonus: sounds on flying, collision, and scoring
 ### Functions I need
- - [ ] start game: game state 1
-    - [ ] start on 'click' (mobile compatible)
+ - [X] start game: game state 1
+    - [X] start on 'click' (mobile compatible)
     - [ ] spawn set of pipes with constant gap
       - [ ] if statement triggering at x-coordinate
- - [ ] bird's movement
-    - [ ] gravity: bird's y-coordinate increases to fall
-    - [ ] flying: bird's y-coordinate decreases to fly on 'click'
-        - [ ] eventListener 'click'
+ - [X] bird's movement
+    - [X] gravity: bird's y-coordinate increases to fall  
+     * velocity's value is increased via gravity constant
+     * bird's position function updates via velocity's value
+    - [X] flying: bird's y-coordinate decreases to fly on 'click'
+        - [X] eventListener 'click' (also enabled 'spacebar')
         - [ ] bonus: flying sound
         - [ ] animation object / array of images to flip through
     - [ ] bonus: rotate bird upward each time it flies (smells like a challenge)
@@ -85,7 +87,7 @@ A simple side-scrolling game where the player controls a bird to fly between pip
     - [ ] collision with pipes
     - [ ] collision with floor
     - [X] cut screen
-    - [ ] restart game on 'click' start button
+    - [X] restart game on 'click' start button
         - [ ] display top score
         - [ ] display current score
         - [ ] reset score on start game
@@ -102,6 +104,7 @@ A simple side-scrolling game where the player controls a bird to fly between pip
 # FINAL THOUGHTS
 *any progress/working comments*
 > working with generated images of rectangles `fillRect()` was proving to be more work than actually drawing canvas images from a sprite image source.  This meant working with images from the beginning would just make things simpler in the long run.
+> incrementing gravity to increase velocity was crucial to the feel of the game.  It made the bird falling feel natural and is an important concept to learn.  Flapping, or flying, meant setting the velocity to fly key-value which doesn't translate well when reading code.
 
 > array of the pipes
 > use pipeGap to create set of pipes but in a random spot
