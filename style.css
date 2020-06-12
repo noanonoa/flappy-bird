@@ -1,5 +1,7 @@
 * {
     font-family: helvetica, sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
 }
 body {
     /* background-color: #483d8b; */

@@ -15,9 +15,9 @@ A simple side-scrolling game where the player controls a bird to fly between pip
 
 # ASSETS
 ![flappy bird theme](/img/og-theme.png)  
-(src: google images)
+(src: google images)  
 ![flappy bird theme v2](/img/og-theme-2.png)  
-(src: https://www.spriters-resource.com/fullview/59894/)
+(src: https://www.spriters-resource.com/fullview/59894/)  
 
 # MVP
  * start the game with a 'press button'
@@ -56,11 +56,13 @@ A simple side-scrolling game where the player controls a bird to fly between pip
  - [ ] constant gap between pipes
  - [ ] bottom pipe (bonus: [ ] image)
  - [ ] score tracker
+ - [X] ready screen: game state 0
+ - [X] game over screen
  - [X] bonus: background image
- - [ ] bonus: ground image
+ - [X] bonus: ground image
  - [ ] bonus: sounds on flying, collision, and scoring
 ### Functions I need
- - [ ] start game
+ - [ ] start game: game state 1
     - [ ] start on 'click' (mobile compatible)
     - [ ] spawn set of pipes with constant gap
       - [ ] if statement triggering at x-coordinate
@@ -79,10 +81,10 @@ A simple side-scrolling game where the player controls a bird to fly between pip
     - [ ] pipes' y-coordinates are generated randomly
     - [X] bonus: draw background
     - [X] draw bird
- - [ ] Game Over
+ - [ ] Game Over: game state 2
     - [ ] collision with pipes
     - [ ] collision with floor
-    - [ ] cut screen ?
+    - [X] cut screen
     - [ ] restart game on 'click' start button
         - [ ] display top score
         - [ ] display current score
