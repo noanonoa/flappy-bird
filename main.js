@@ -67,7 +67,7 @@ ground = {
     height: 112,
     //x,y coordinates of where image should be drawn on canvas
     x: 0,
-    y:cvs.height - 100,
+    y:cvs.height - 112,
     w:224,
     h:112,
     render: function() {
@@ -94,14 +94,14 @@ bird = {
     render: function() {
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x,this.y,this.w,this.h)
     },
-    fly: 5.8,
+    fly: 5.5,
     flap: function() {
         console.log('🐦')
         //bird flies
         this.velocity = - this.fly
     },
     //gravity increments rate of velocity @ 50-60 times per sec.
-    gravity: .35,
+    gravity: .32,
     //rate of velocity = pixels the bird will drop in a frame
     velocity: 0,
     //function checks gameState and updates bird's position
@@ -109,8 +109,21 @@ bird = {
         if (gameState.current == gameState.getReady) {
             this.y = 160
         } else {
+            //bird falls to gravity
             this.velocity += this.gravity
             this.y += this.velocity
+            //check collision with ground
+            if (this.y+this.h >= cvs.height-ground.h) {
+                console.log('collision')
+                this.y = cvs.height-ground.h - this.h
+                //game is over
+                gameState.current = gameState.gameOver
+            }
+            //bird cannot fly above canvas
+            if (this.y <= 0) {
+                console.log('oops!')
+                this.y = 2
+            }
         }
     }
 }
@@ -144,8 +157,18 @@ bird2 = {
         if (gameState.current == gameState.getReady) {
             this.y = 160
         } else {
+            //bird falls to gravity
             this.velocity += this.gravity
             this.y += this.velocity
+            //check collision with ground
+            if (this.y+this.h >= cvs.height-ground.h) {
+                console.log('collision')
+                this.y = cvs.height-ground.h - this.h
+            }
+            if (this.y <= 0) {
+                console.log('oops!')
+                this.y = 2
+            }
         }
     }
 }
@@ -208,16 +231,16 @@ let draw = () => {
 let loop = () => {
     draw()
     //average of AnimationFrame is 50-60fps
-    requestAnimationFrame(loop)
+    // requestAnimationFrame(loop)
 }
 loop()
-
+setInterval(loop, 17)
 
 /*************************
 ***** EVENT HANDLERS ***** 
 *************************/
 //on mouse click // tap screen
-cvs.addEventListener('click', (e) => {
+cvs.addEventListener('click', () => {
     //if ready screen >> go to play state
     if (gameState.current == gameState.getReady) {
         gameState.current = gameState.play
@@ -241,7 +264,6 @@ document.body.addEventListener('keydown', (e) => {
         //if play state >> bird keeps flying
         if (gameState.current == gameState.play) {
             bird.flap()
-            console.log(e.keyCode)
         }
         //if game over screen >> go to ready screen
         if (gameState.current == gameState.gameOver) {

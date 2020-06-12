@@ -85,7 +85,7 @@ A simple side-scrolling game where the player controls a bird to fly between pip
     - [X] draw bird
  - [ ] Game Over: game state 2
     - [ ] collision with pipes
-    - [ ] collision with floor
+    - [X] collision with floor and canvas ceiling
     - [X] cut screen
     - [X] restart game on 'click' start button
         - [ ] display top score
