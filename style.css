@@ -2,29 +2,33 @@
     font-family: helvetica, sans-serif;
 }
 body {
-    background-color: #483d8b;
+    /* background-color: #483d8b; */
 }
 
 /********************
 * video game screen *
 ********************/
 .container {
-    background-color: #bada55;
+    /* background-color: #bada55; */
 }
     .game-title {
     /***** Flappy Bird *****/
         text-align: center;
     }
     .game-screen {
-        background-color: rgb(69, 184, 194);
-        width: 324px;
-        height: 576px;
+        /* background-color: rgb(69, 184, 194); */
+        width: 300px;
+        height: 500px;
         margin: 0 auto;
     }
         canvas {
-            /* background-color: #d2ce89; */
+            background-color: 
+            black
+            /* #00bbc4 */
+            /* #d2ce89 */
+            ;
             display: block;
-            width: 324px;
-            height: 576px;
+            width: 300px;
+            height: 500px;
             margin: 0 auto;
         }
