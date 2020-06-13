@@ -1,4 +1,4 @@
-console.log('check for collision 🚀')
+console.log('make the pipes move 🚀')
 
 /************************
 ***** DECLARATIONS: *****
@@ -71,6 +71,43 @@ bg = {
 }
 // topPipe
 // botPipe
+pipes = {
+    //object's key-value properties pinpointing its location
+    //top pipe image x,y coordinate
+    top: {
+        imgX: 56,
+        imgY: 323,
+    },
+    //bot pipe image x,y coordinate
+    bot: {
+        imgX: 84,
+        imgY:323,
+    },
+    //pipes' values for drawing on canvas
+    width: 26,
+    height: 160,
+    x: 150,
+    y: 0,
+    w: 55,
+    h: 250,
+    gap: 85,
+    dx: 2,
+    //pipes' y value needs to vary randomly within acceptable parameters
+    //object's render function that utilizes all above values to draw image onto canvas
+    render: function() {
+        ctx.drawImage(theme2, this.top.imgX,this.top.imgY,this.width,this.height, this.x,this.y,this.w,this.h)
+        ctx.drawImage(theme2, this.bot.imgX,this.bot.imgY,this.width,this.height, this.x,(this.y+this.gap+this.h),this.w,this.h)
+    },
+    //animate: set of pipes scroll from the right of canvas by decrementing x
+    position: function() {
+        if (gameState.current == gameState.getReady) {
+            this.x = cvs.width
+        }
+        if (gameState.current == gameState.play) {
+            this.x = this.x - this.dx
+        }
+    }
+}
 // ground
 ground = {
     //imgX & imgY is the x,y coordinates of image
@@ -89,6 +126,8 @@ ground = {
         //image repeat and tile to fit canvas
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x + this.width,this.y,this.w,this.h)
     },
+    //animate:  ground scrolls to the left in a continuous loop when game state is at play
+    //needs to be at the same rate of pipes' scroll speed 
     position: function() {
         if (gameState.current == gameState.getReady) {
             this.x = 0
@@ -119,7 +158,7 @@ bird = {
     },
     fly: 5.5,
     flap: function() {
-        console.log('🐦')
+        // console.log('🐦')
         //bird flies
         this.velocity = - this.fly
     },
@@ -137,14 +176,14 @@ bird = {
             this.y += this.velocity
             //check collision with ground
             if (this.y+this.h >= cvs.height-ground.h) {
-                console.log('collision')
+                // console.log('collision')
                 this.y = cvs.height-ground.h - this.h
                 //game is over
-                gameState.current = gameState.gameOver
+                // gameState.current = gameState.gameOver
             }
             //bird cannot fly above canvas
             if (this.y <= 0) {
-                console.log('oops!')
+                // console.log('oops!')
                 this.y = 2
             }
         }
@@ -168,7 +207,7 @@ bird2 = {
     },
     fly: 5.8,
     flap: function() {
-        console.log('🐦🐦')
+        // console.log('🐦🐦')
         this.velocity = - this.fly
     },
     //gravity increments rate of velocity @ 50-60 times per sec.
@@ -185,11 +224,11 @@ bird2 = {
             this.y += this.velocity
             //check collision with ground
             if (this.y+this.h >= cvs.height-ground.h) {
-                console.log('collision')
+                // console.log('collision')
                 this.y = cvs.height-ground.h - this.h
             }
             if (this.y <= 0) {
-                console.log('oops!')
+                // console.log('oops!')
                 this.y = 2
             }
         }
@@ -240,16 +279,18 @@ gameOver = {
 let draw = () => {
     //this clears canvas to default bg color
     ctx.fillStyle = '#00bbc4'
-    console.log(cvs.width, cvs.height)
+    // console.log(cvs.width, cvs.height)
     ctx.fillRect(0,0, cvs.width,cvs.height)
     //things to draw
     bg.render()
+    pipes.render()
     ground.render()
     bird.render()
     getReady.render()
     gameOver.render()
     bird.position()
     bg.position()
+    pipes.position()
     ground.position()
 }
 //animation handler

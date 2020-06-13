@@ -23,7 +23,7 @@ A simple side-scrolling game where the player controls a bird to fly between pip
  * start the game with a 'press button' **check**
  * bird falls default to gravity **check**
  * bird flies to 'click' (might be better for mobile capabilities) **check**
- * pipes spawn top and bottom and scroll to the left
+ * pipes spawn top and bottom and scroll to the left  **check**
  * track score
  * end game on collision **check**
 
@@ -52,9 +52,9 @@ A simple side-scrolling game where the player controls a bird to fly between pip
  - [X] specify canvas size
  - [X] draw bird 
       - [X] bonus: image)
- - [ ] top pipe (bonus: [ ] image)
- - [ ] constant gap between pipes
- - [ ] bottom pipe (bonus: [ ] image)
+ - [X] top pipe (bonus: [X] image)
+ - [X] constant gap between pipes
+ - [X] bottom pipe (bonus: [X] image)
  - [ ] score tracker
  - [X] ready screen: game state 0
  - [X] game over screen
@@ -64,8 +64,8 @@ A simple side-scrolling game where the player controls a bird to fly between pip
 ### Functions I need
  - [X] start game: game state 1
     - [X] start on 'click' (mobile compatible)
-    - [ ] spawn set of pipes with constant gap
-      - [ ] if statement triggering at x-coordinate
+    - [X] spawn set of pipes with constant gap
+      - [X] if statement triggering at x-coordinate
  - [X] bird's movement
     - [X] gravity: bird's y-coordinate increases to fall  
      * velocity's value is increased via gravity constant
@@ -77,13 +77,13 @@ A simple side-scrolling game where the player controls a bird to fly between pip
     - [ ] bonus: rotate bird upward each time it flies (smells like a challenge)
  - [X] a drawing function to animate game
    - [X] place images and loop
-    - [ ] pipes' x-coordinates decrease to scroll left
+    - [X] pipes' x-coordinates decrease to scroll left
         - [ ] increment score by 1 upon passing pipe
         - [ ] bonus: sound on passing pipe
     - [ ] pipes' y-coordinates are generated randomly
     - [X] bonus: draw background
     - [X] draw bird
- - [ ] Game Over: game state 2
+ - [X] Game Over: game state 2
     - [ ] collision with pipes
     - [X] collision with floor and canvas ceiling
     - [X] cut screen
@@ -104,7 +104,9 @@ A simple side-scrolling game where the player controls a bird to fly between pip
 # FINAL THOUGHTS
 *any progress/working comments*
 > working with generated images of rectangles `fillRect()` was proving to be more work than actually drawing canvas images from a sprite image source.  This meant working with images from the beginning would just make things simpler in the long run.
-> incrementing gravity to increase velocity was crucial to the feel of the game.  It made the bird falling feel natural and is an important concept to learn.  Flapping, or flying, meant setting the velocity to fly key-value which doesn't translate well when reading code.
+> incrementing gravity to increase velocity was crucial to the feel of the game.  It made the bird falling feel natural and is an important concept to learn.  Flapping, or flying, meant setting the velocity to fly key-value which doesn't translate well when reading code.  
+
+>Infinite pipe spawning has been a road block for me.  Animating canvas images seem even more challenging.
 
 > array of the pipes
 > use pipeGap to create set of pipes but in a random spot
