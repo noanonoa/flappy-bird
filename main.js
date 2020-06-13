@@ -49,11 +49,24 @@ bg = {
     y: cvs.height - 228,
     w: 276,
     h: 228,
+    dx: .2,
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x,this.y,this.w,this.h)
         //image repeat and tile to fit canvas
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x + this.width,this.y,this.w,this.h)
+        //image repeat again for continuous animation
+        ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x + this.width*2,this.y,this.w,this.h)
+        //still img on get ready frame
+    },
+    //animate: slowly move img on play frame by decrementing x
+    position: function () {
+        if (gameState.current == gameState.getReady) {
+            this.x = 0
+        }    
+        if (gameState.current == gameState.play) {
+            this.x = (this.x-this.dx) % (this.w)
+        }
     }
 }
 // topPipe
@@ -70,10 +83,20 @@ ground = {
     y:cvs.height - 112,
     w:224,
     h:112,
+    dx: 2,
     render: function() {
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x,this.y,this.w,this.h)
         //image repeat and tile to fit canvas
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x + this.width,this.y,this.w,this.h)
+    },
+    position: function() {
+        if (gameState.current == gameState.getReady) {
+            this.x = 0
+        }
+        if (gameState.current == gameState.play) {
+            //modulus keeps x value infinitely cycling back to zero
+            this.x = (this.x-this.dx) % (this.w/2)
+        }
     }
 }
 //bonus: let bird be an img
@@ -196,12 +219,12 @@ gameOver = {
     imgX: 174,
     imgY: 228,
     width: 226,
-    height: 202,
+    height: 158,
     //x,y coordinates of where image should be drawn on canvas
     x: cvs.width/2 - 226/2,
     y: cvs.height/2 - 160,
     w: 226,
-    h:202,
+    h:160,
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
         //only draw this if the game state is on game over
@@ -226,6 +249,8 @@ let draw = () => {
     getReady.render()
     gameOver.render()
     bird.position()
+    bg.position()
+    ground.position()
 }
 //animation handler
 let loop = () => {

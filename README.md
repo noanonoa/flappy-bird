@@ -20,12 +20,12 @@ A simple side-scrolling game where the player controls a bird to fly between pip
 (src: https://www.spriters-resource.com/fullview/59894/)  
 
 # MVP
- * start the game with a 'press button'
+ * start the game with a 'press button' **check**
  * bird falls default to gravity **check**
- * bird flies to 'click' (might be better for mobile capabilities)
- * pipes spawn top and bottom (rectangles) and scroll to the left
+ * bird flies to 'click' (might be better for mobile capabilities) **check**
+ * pipes spawn top and bottom and scroll to the left
  * track score
- * end game on collision
+ * end game on collision **check**
 
 # STRETCH GOALS
  * animate bird
