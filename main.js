@@ -1,4 +1,4 @@
-console.log('make the pipes move 🚀')
+console.log('pipes pipes pipes and MORE PIPES 🚀')
 
 /************************
 ***** DECLARATIONS: *****
@@ -18,6 +18,7 @@ let getReady    //  get ready screen
 let gameOver    //  game over screen
 let score       //  score counter
 let gameState   //  state of game
+let frame      //  ms/frame = 17; dx/frame = 2; fps = 59;
 
 cvs = document.getElementById('game')
 ctx = cvs.getContext('2d')
@@ -25,6 +26,7 @@ theme1 = new Image()
 theme1.src = 'img/og-theme.png'
 theme2 = new Image()
 theme2.src = 'img/og-theme-2.png'
+frame = 0;
 gameState = {
     //loads game on ready screen, tick to change state of game
     current: 0,
@@ -86,29 +88,64 @@ pipes = {
     //pipes' values for drawing on canvas
     width: 26,
     height: 160,
-    x: 150,
-    y: 0,
+    pipeGenerator: [],
     w: 55,
-    h: 250,
+    h: 300,
     gap: 85,
     dx: 2,
+    //y value must be -260 <= y <= -40
+    minY: -260,
+    maxY: -40,
+    //pipes' x value needs to be width of canvas to render outside
     //pipes' y value needs to vary randomly within acceptable parameters
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
-        ctx.drawImage(theme2, this.top.imgX,this.top.imgY,this.width,this.height, this.x,this.y,this.w,this.h)
-        ctx.drawImage(theme2, this.bot.imgX,this.bot.imgY,this.width,this.height, this.x,(this.y+this.gap+this.h),this.w,this.h)
-    },
-    //animate: set of pipes scroll from the right of canvas by decrementing x
-    position: function() {
-        if (gameState.current == gameState.getReady) {
-            this.x = cvs.width
+        //draw whatever is in the pipeGenerator
+        for (let i = 0; i < this.pipeGenerator.length; i++) {
+            let pipe = this.pipeGenerator[i]
+            let topPipe = pipe.y
+            let bottomPipe = pipe.y + this.gap + this.h
+
+            ctx.drawImage(theme2, this.top.imgX,this.top.imgY,this.width,this.height, pipe.x,topPipe,this.w,this.h)
+            ctx.drawImage(theme2, this.bot.imgX,this.bot.imgY,this.width,this.height, pipe.x,bottomPipe,this.w,this.h)
         }
+    },
+    position: function() {
+        //if game is not in session, do nothing
+        if (gameState.current !== gameState.play) {
+            return
+        }
+        //if game is in session, generate set of pipes forever
         if (gameState.current == gameState.play) {
-            this.x = this.x - this.dx
+            
+
+            //when pipes reach this frame, generate another set
+            if (frame%90 == 0) {
+                console.log(frame)
+                this.pipeGenerator.push(
+                    {
+                        //spawn off canvas
+                        x: cvs.width,
+                        //random y-coordinates
+                        y: Math.floor((Math.random() * (this.maxY-this.minY+1)) + this.minY)
+                    }
+                )
+            }
+                
+                //animate: set of pipes scroll from the right of canvas by decrementing x
+            for (let i = 0; i < this.pipeGenerator.length; i++) {
+                let pipes = this.pipeGenerator[i]
+                pipes.x -= this.dx
+
+                console.log(this.pipeGenerator.length)
+                if(this.pipeGenerator[i].x < -this.w) {
+                    this.pipeGenerator.shift()
+                }
+            }
         }
     }
 }
-// ground
+//ground
 ground = {
     //imgX & imgY is the x,y coordinates of image
     imgX: 276,
@@ -288,6 +325,9 @@ let draw = () => {
     bird.render()
     getReady.render()
     gameOver.render()
+
+}
+let update = () => {
     bird.position()
     bg.position()
     pipes.position()
@@ -296,6 +336,8 @@ let draw = () => {
 //animation handler
 let loop = () => {
     draw()
+    update()
+    frame++
     //average of AnimationFrame is 50-60fps
     // requestAnimationFrame(loop)
 }
