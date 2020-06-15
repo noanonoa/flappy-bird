@@ -80,7 +80,7 @@ A simple side-scrolling game where the player controls a bird to fly between pip
     - [X] pipes' x-coordinates decrease to scroll left
         - [ ] increment score by 1 upon passing pipe
         - [ ] bonus: sound on passing pipe
-    - [ ] pipes' y-coordinates are generated randomly
+    - [X] pipes' y-coordinates are generated randomly
     - [X] bonus: draw background
     - [X] draw bird
  - [X] Game Over: game state 2
