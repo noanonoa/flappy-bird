@@ -17,6 +17,11 @@ let map         //  map of number images
 let score       //  score counter
 let gameState   //  state of game
 let frame       //  ms/frame = 17; dx/frame = 2; fps = 59;
+const SFX_SCORE = new Audio()         //  sound for scoring
+const SFX_FLAP = new Audio()          //  sound for flying bird
+const SFX_COLLISION = new Audio()     //  sound for collision
+const SFX_FALL = new Audio()          //  sound for falling to the ground
+const SFX_SWOOSH = new Audio()        //  sound for changing game state
 
 cvs = document.getElementById('game')
 ctx = cvs.getContext('2d')
@@ -25,6 +30,12 @@ theme1.src = 'img/og-theme.png'
 theme2 = new Image()
 theme2.src = 'img/og-theme-2.png'
 frame = 0;
+SFX_SCORE.src = 'audio/sfx_point.wav'
+SFX_FLAP.src = 'audio/sfx_wing.wav'
+SFX_COLLISION.src = 'audio/sfx_hit.wav'
+SFX_FALL.src = 'audio/sfx_die.wav'
+SFX_SWOOSH.src = 'audio/sfx_swooshing.wav'
+
 gameState = {
     //loads game on ready screen, tick to change state of game
     current: 0,
@@ -165,6 +176,7 @@ pipes = {
                     this.pipeGenerator.shift()
                         //score up
                         score.current++
+                        SFX_SCORE.play()
                     }
 
                 //PIPE COLLISION
@@ -174,6 +186,7 @@ pipes = {
                     b.top < p.top.bottom &&
                     b.bottom > p.top.top) {
                         gameState.current = gameState.gameOver
+                        SFX_COLLISION.play()
                 }
                 //collision with bottom pipe
                 if (b.left < p.right &&
@@ -181,6 +194,7 @@ pipes = {
                     b.top < p.bot.bottom &&
                     b.bottom > p.bot.top) {
                         gameState.current = gameState.gameOver
+                        SFX_COLLISION.play()
                 }
             }
         }
@@ -371,7 +385,10 @@ bird = {
             if (this.y+this.h/2 >= cvs.height-ground.h) {
                 this.y = cvs.height-ground.h - this.h/2
                 //then the game is over
-                gameState.current = gameState.gameOver
+                if (gameState.current == gameState.play) {
+                    gameState.current = gameState.gameOver
+                    SFX_FALL.play()
+                }
             }
             
             //bird cannot fly above canvas
@@ -426,7 +443,10 @@ bird1 = {
             if (this.y+this.h/2 >= cvs.height-ground.h) {
                 this.y = cvs.height-ground.h - this.h/2
                 //then the game is over
-                gameState.current = gameState.gameOver
+                if (gameState.current == gameState.play) {
+                    gameState.current = gameState.gameOver
+                    SFX_FALL.play()
+                }
             }
             
             //bird cannot fly above canvas
@@ -481,7 +501,10 @@ bird2 = {
             if (this.y+this.h/2 >= cvs.height-ground.h) {
                 this.y = cvs.height-ground.h - this.h/2
                 //then the game is over
-                gameState.current = gameState.gameOver
+                if (gameState.current == gameState.play) {
+                    gameState.current = gameState.gameOver
+                    SFX_FALL.play()
+                }
             }
             
             //bird cannot fly above canvas
@@ -579,12 +602,14 @@ cvs.addEventListener('click', () => {
     //if play state >> bird keeps flying
     if (gameState.current == gameState.play) {
         bird.flap()
+        SFX_FLAP.play()
     }
     //if game over screen >> go to ready screen
     if (gameState.current == gameState.gameOver) {
         pipes.reset()
         score.reset()
         gameState.current = gameState.getReady
+        SFX_SWOOSH.play()
     }
 })
 //on spacebar
@@ -597,11 +622,13 @@ document.body.addEventListener('keydown', (e) => {
         //if play state >> bird keeps flying
         if (gameState.current == gameState.play) {
             bird.flap()
+            SFX_FLAP.play()
         }
         //if game over screen >> go to ready screen
         if (gameState.current == gameState.gameOver) {
             pipes.reset()
             score.reset()
+            SFX_SWOOSH.play()
             gameState.current = gameState.getReady
         }
     }

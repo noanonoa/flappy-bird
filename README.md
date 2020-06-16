@@ -14,10 +14,13 @@ A simple side-scrolling game where the player controls a bird to fly between pip
  * JavaScript for game logic
 
 # ASSETS
+### IMAGES
 ![flappy bird theme](/img/og-theme.png)  
 (src: google images)  
 ![flappy bird theme v2](/img/og-theme-2.png)  
 (src: https://www.spriters-resource.com/fullview/59894/)  
+### AUDIO
+(src: https://www.sounds-resource.com/mobile/flappybird/sound/5309/)
 
 # MVP
  * start the game with a 'press button'
@@ -50,17 +53,16 @@ A simple side-scrolling game where the player controls a bird to fly between pip
 ## JavaScript
 ### Pieces I need
  - [X] specify canvas size
- - [X] draw bird 
-      - [X] bonus: image)
- - [X] top pipe (bonus: [X] image)
+ - [X] draw bird image
+ - [X] top pipe image
  - [X] constant gap between pipes
- - [X] bottom pipe (bonus: [X] image)
+ - [X] bottom pipe image
  - [X] score tracker
  - [X] ready screen: game state 0
- - [X] game over screen
- - [X] bonus: background image
- - [X] bonus: ground image
- - [ ] bonus: sounds on flying, collision, and scoring
+ - [X] game over screen: game state 2
+ - [X] background image
+ - [X] ground image
+ - [X] sounds on flying, collision, and scoring
 ### Functions I need
  - [X] start game: game state 1
     - [X] start on 'click' (mobile compatible)
@@ -72,16 +74,14 @@ A simple side-scrolling game where the player controls a bird to fly between pip
      * bird's position function updates via velocity's value
     - [X] flying: bird's y-coordinate decreases to fly on 'click'
         - [X] eventListener 'click' (also enabled 'spacebar')
-        - [ ] bonus: flying sound
+    - [ ] rotate bird upward each time it flies (smells like a challenge)
         - [ ] animation object / array of images to flip through
-    - [ ] bonus: rotate bird upward each time it flies (smells like a challenge)
  - [X] a drawing function to animate game
    - [X] place images and loop
     - [X] pipes' x-coordinates decrease to scroll left
         - [X] increment score by 1 upon passing pipe
-        - [ ] bonus: sound on scoring
     - [X] pipes' y-coordinates are generated randomly
-    - [X] bonus: draw background
+    - [X] draw background
     - [X] draw bird
  - [X] Game Over: game state 2
     - [X] collision with pipes
