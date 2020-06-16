@@ -74,7 +74,7 @@ A simple side-scrolling game where the player controls a bird to fly between pip
      * bird's position function updates velocity's value
     - [X] flying: bird's y-coordinate decreases to fly on 'click'
         - [X] eventListener 'click' (also enabled 'spacebar')
-    - [ ] rotate bird upward each time it flies (smells like a challenge)
+    - [X] rotate bird upward each time it flies (smells like a challenge)
         - [X] animation object / array of images to flip through
  - [X] a drawing function to animate game
    - [X] place images and loop

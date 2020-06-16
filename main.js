@@ -17,6 +17,7 @@ let map         //  map of number images
 let score       //  score counter
 let gameState   //  state of game
 let frame       //  ms/frame = 17; dx/frame = 2; fps = 59;
+let degree      //  bird rotation degree
 const SFX_SCORE = new Audio()         //  sound for scoring
 const SFX_FLAP = new Audio()          //  sound for flying bird
 const SFX_COLLISION = new Audio()     //  sound for collision
@@ -30,6 +31,7 @@ theme1.src = 'img/og-theme.png'
 theme2 = new Image()
 theme2.src = 'img/og-theme-2.png'
 frame = 0;
+degree = Math.PI/180
 SFX_SCORE.src = 'audio/sfx_point.wav'
 SFX_FLAP.src = 'audio/sfx_wing.wav'
 SFX_COLLISION.src = 'audio/sfx_hit.wav'
@@ -341,7 +343,7 @@ score = {
     }
 }    
 //bird : YELLOW BIRD
-bird2 = {
+bird = {
     animation: [
         {imgX: 276, imgY: 114},  //  position 0
         {imgX: 276, imgY: 140},  //  position 1
@@ -368,8 +370,16 @@ bird2 = {
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
         let bird = this.animation[this.fr]
+        //save all previous setting
+        ctx.save()
+        //target center of bird
+        ctx.translate(this.x, this.y)
+        //rotate bird by degree
+        ctx.rotate(this.rotation)
+        ctx.drawImage(theme1, bird.imgX,bird.imgY,this.width,this.height, -this.w/2,-this.h/2,this.w,this.h)
+        ctx.restore()
         //bird is centered on x,y position
-        ctx.drawImage(theme1, bird.imgX,bird.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
+        // ctx.drawImage(theme1, bird.imgX,bird.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
     },
     //bird flies
     flap: function() {
@@ -379,6 +389,7 @@ bird2 = {
     position: function() {
         if (gameState.current == gameState.getReady) {
             this.y = 160
+            this.rotation = 0 * degree
             //bird animation changes every 20 frames
             if (frame%20 == 0) {
                 this.fr += 1
@@ -402,13 +413,23 @@ bird2 = {
             this.velocity += this.gravity
             this.y += this.velocity
 
+            //bird rotation
+            if (this.velocity <= this.fly) {
+                this.rotation = -15 * degree
+            } else if (this.velocity >= this.fly+2) {
+                this.rotation = 70 * degree
+                this.fr = 1
+            } else {
+                this.rotation = 0
+            }
+
             //check collision with ground
             if (this.y+this.h/2 >= cvs.height-ground.h) {
                 this.y = cvs.height-ground.h - this.h/2
-
                 //stop flapping when it hits the ground
                 if (frame%1 == 0) {
                     this.fr = 2
+                    this.rotation = 70 * degree
                 }
                 //then the game is over
                 if (gameState.current == gameState.play) {
@@ -421,6 +442,7 @@ bird2 = {
             if (this.y-this.h/2 <= 0) {
                 this.y = this.r
             }
+
         }
     }
 }
@@ -509,7 +531,7 @@ bird1 = {
     }
 }
 //bird2 : BLUE BIRD
-bird = {
+bird2 = {
     //ANIMATION: bird  //DO THIS STRETCH GOAL
     animation: [
         {imgX: 87, imgY: 491},   //  position 0
