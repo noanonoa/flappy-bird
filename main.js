@@ -341,18 +341,22 @@ score = {
     }
 }    
 //bird : YELLOW BIRD
-bird = {
+bird2 = {
+    animation: [
+        {imgX: 276, imgY: 114},  //  position 0
+        {imgX: 276, imgY: 140},  //  position 1
+        {imgX: 276, imgY: 166},  //  position 2
+        {imgX: 276, imgY: 140}   //  position 1
+    ],
+    fr: 0,
     //object's key-value properties pinpointing its location
-    //ANIMATION: bird  //DO THIS STRETCH GOAL
-    imgX: 276,
-    imgY: 112,
     width: 34,
-    height: 26,
+    height: 24,
     //values for drawing on canvas
     x: 50,
     y: 160,
     w: 34,
-    h: 26,
+    h: 24,
     //bird's radius
     r: 12,
     //how much the bird flies per flap()
@@ -363,8 +367,9 @@ bird = {
     velocity: 0,
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
+        let bird = this.animation[this.fr]
         //bird is centered on x,y position
-        ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
+        ctx.drawImage(theme1, bird.imgX,bird.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
     },
     //bird flies
     flap: function() {
@@ -374,8 +379,24 @@ bird = {
     position: function() {
         if (gameState.current == gameState.getReady) {
             this.y = 160
+            //bird animation changes every 20 frames
+            if (frame%20 == 0) {
+                this.fr += 1
+            }
+            //when bird animation reaches its last value, reset animation
+            if (this.fr > this.animation.length - 1) {
+                this.fr = 0
+            }
 
         } else {
+            //bird animation changes every 4 frames
+            if (frame%4 == 0) {
+                this.fr += 1
+            }
+            //when bird animation reaches its last value, reset animation
+            if (this.fr > this.animation.length - 1) {
+                this.fr = 0
+            }
 
             //bird falls to gravity
             this.velocity += this.gravity
@@ -384,6 +405,11 @@ bird = {
             //check collision with ground
             if (this.y+this.h/2 >= cvs.height-ground.h) {
                 this.y = cvs.height-ground.h - this.h/2
+
+                //stop flapping when it hits the ground
+                if (frame%1 == 0) {
+                    this.fr = 2
+                }
                 //then the game is over
                 if (gameState.current == gameState.play) {
                     gameState.current = gameState.gameOver
@@ -400,17 +426,22 @@ bird = {
 }
 //bird1 : RED BIRD
 bird1 = {
-    //object's key-value properties pinpointing its location
     //ANIMATION: bird  //DO THIS STRETCH GOAL
-    imgX: 115,
-    imgY: 381,
-    width: 17,
+    animation: [
+        {imgX: 115, imgY: 381},  //  position 0
+        {imgX: 115, imgY: 407},  //  position 1
+        {imgX: 115, imgY: 433},  //  position 2
+        {imgX: 115, imgY: 407}   //  position 1
+    ],
+    fr: 0,
+    //object's key-value properties pinpointing its location
+    width: 18,
     height: 12,
     //values for drawing on canvas
     x: 50,
     y: 160,
     w: 34,
-    h: 26,
+    h: 24,
     //bird's radius
     r: 12,
     //how much the bird flies per flap()
@@ -421,8 +452,9 @@ bird1 = {
     velocity: 0,
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
+        let bird = this.animation[this.fr]
         //bird is centered on x,y position
-        ctx.drawImage(theme2, this.imgX,this.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
+        ctx.drawImage(theme2, bird.imgX,bird.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
     },
     //bird flies
     flap: function() {
@@ -432,8 +464,24 @@ bird1 = {
     position: function() {
         if (gameState.current == gameState.getReady) {
             this.y = 160
+            //bird animation changes every 20 frames
+            if (frame%20 == 0) {
+                this.fr += 1
+            }
+            //when bird animation reaches its last value, reset animation
+            if (this.fr > this.animation.length - 1) {
+                this.fr = 0
+            }
 
         } else {
+            //bird animation changes every 4 frames
+            if (frame%4 == 0) {
+                this.fr += 1
+            }
+            //when bird animation reaches its last value, reset animation
+            if (this.fr > this.animation.length - 1) {
+                this.fr = 0
+            }
 
             //bird falls to gravity
             this.velocity += this.gravity
@@ -442,6 +490,10 @@ bird1 = {
             //check collision with ground
             if (this.y+this.h/2 >= cvs.height-ground.h) {
                 this.y = cvs.height-ground.h - this.h/2
+                //stop flapping when it hits the ground
+                if (frame%1 == 0) {
+                    this.fr = 2
+                }
                 //then the game is over
                 if (gameState.current == gameState.play) {
                     gameState.current = gameState.gameOver
@@ -457,18 +509,26 @@ bird1 = {
     }
 }
 //bird2 : BLUE BIRD
-bird2 = {
+bird = {
+    //ANIMATION: bird  //DO THIS STRETCH GOAL
+    animation: [
+        {imgX: 87, imgY: 491},   //  position 0
+        {imgX: 115, imgY: 329},  //  position 1
+        {imgX: 115, imgY: 355},  //  position 2
+        {imgX: 115, imgY: 329}   //  position 1
+    ],
+    fr: 0,
     //object's key-value properties pinpointing its location
     //ANIMATION: bird2  //DO THIS STRETCH GOAL
     imgX: 87,
     imgY: 491,
-    width: 17,
+    width: 18,
     height: 12,
     //values for drawing on canvas
     x: 50,
     y: 160,
     w: 34,
-    h: 26,
+    h: 24,
     //bird's radius
     r: 12,
     //how much the bird flies per flap()
@@ -479,8 +539,9 @@ bird2 = {
     velocity: 0,
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
+        let bird = this.animation[this.fr]
         //bird is centered on x,y position
-        ctx.drawImage(theme2, this.imgX,this.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
+        ctx.drawImage(theme2, bird.imgX,bird.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
     },
     //bird flies
     flap: function() {
@@ -490,8 +551,24 @@ bird2 = {
     position: function() {
         if (gameState.current == gameState.getReady) {
             this.y = 160
+            //bird animation changes every 20 frames
+            if (frame%20 == 0) {
+                this.fr += 1
+            }
+            //when bird animation reaches its last value, reset animation
+            if (this.fr > this.animation.length - 1) {
+                this.fr = 0
+            }
 
         } else {
+            //bird animation changes every 4 frames
+            if (frame%4 == 0) {
+                this.fr += 1
+            }
+            //when bird animation reaches its last value, reset animation
+            if (this.fr > this.animation.length - 1) {
+                this.fr = 0
+            }
 
             //bird falls to gravity
             this.velocity += this.gravity
@@ -500,6 +577,10 @@ bird2 = {
             //check collision with ground
             if (this.y+this.h/2 >= cvs.height-ground.h) {
                 this.y = cvs.height-ground.h - this.h/2
+                //stop flapping when it hits the ground
+                if (frame%1 == 0) {
+                    this.fr = 2
+                }
                 //then the game is over
                 if (gameState.current == gameState.play) {
                     gameState.current = gameState.gameOver

@@ -62,7 +62,7 @@ A simple side-scrolling game where the player controls a bird to fly between pip
  - [X] game over screen: game state 2
  - [X] background image
  - [X] ground image
- - [X] sounds on flying, collision, and scoring
+ - [X] sounds on flying, collision, scoring, falling, and game over screen
 ### Functions I need
  - [X] start game: game state 1
     - [X] start on 'click' (mobile compatible)
@@ -70,12 +70,12 @@ A simple side-scrolling game where the player controls a bird to fly between pip
       - [X] if statement triggering at x-coordinate
  - [X] bird's movement
     - [X] gravity: bird's y-coordinate increases to fall  
-     * velocity's value is increased via gravity constant
-     * bird's position function updates via velocity's value
+     * velocity's value is incremented by gravity constant
+     * bird's position function updates velocity's value
     - [X] flying: bird's y-coordinate decreases to fly on 'click'
         - [X] eventListener 'click' (also enabled 'spacebar')
     - [ ] rotate bird upward each time it flies (smells like a challenge)
-        - [ ] animation object / array of images to flip through
+        - [X] animation object / array of images to flip through
  - [X] a drawing function to animate game
    - [X] place images and loop
     - [X] pipes' x-coordinates decrease to scroll left
