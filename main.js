@@ -1,5 +1,3 @@
-console.log('collision control 🚀')
-
 /************************
 ***** DECLARATIONS: *****
 ************************/
@@ -8,13 +6,14 @@ let ctx         //  context'2d'
 let theme1      //  original theme
 let theme2      //  original them v2
 let bg          //  background
-let bird        //  bird yellow
-let bird1       //  bird ?color?
-let bird2       //  bird blue
+let bird        //  bird: yellow
+let bird1       //  bird: red
+let bird2       //  bird: blue
 let pipes       //  top and bottom pipes
-let ground      //  ground
+let ground      //  ground floor
 let getReady    //  get ready screen
 let gameOver    //  game over screen
+let map         //  map of number images
 let score       //  score counter
 let gameState   //  state of game
 let frame       //  ms/frame = 17; dx/frame = 2; fps = 59;
@@ -32,11 +31,10 @@ gameState = {
     getReady: 0,
     //on play game state: bird flaps and flies
     play: 1,
-    //game over screen: 'start' button takes player to ready screen
+    //game over screen: button||click takes player to ready screen
     gameOver: 2
 }
-
-//bonus: animate slowly
+//background
 bg = {
     //object's key-value properties pinpointing its location
     imgX: 0,
@@ -54,24 +52,26 @@ bg = {
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x,this.y,this.w,this.h)
+
         //image repeat and tile to fit canvas
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x + this.width,this.y,this.w,this.h)
+
         //image repeat again for continuous animation
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x + this.width*2,this.y,this.w,this.h)
-        //still img on get ready frame
     },
-    //animate: slowly move img on play frame by decrementing x
+
     position: function () {
+        //still img on get ready frame
         if (gameState.current == gameState.getReady) {
             this.x = 0
         }    
+        //ANIMATION: slowly move background on play game state by decrementing x
         if (gameState.current == gameState.play) {
             this.x = (this.x-this.dx) % (this.w)
         }
     }
 }
-// topPipe
-// botPipe
+//top and bottom pipes
 pipes = {
     //object's key-value properties pinpointing its location
     //top pipe image x,y coordinate
@@ -84,19 +84,22 @@ pipes = {
         imgX: 84,
         imgY:323,
     },
-    //pipes' values for drawing on canvas
     width: 26,
     height: 160,
-    pipeGenerator: [],
+    //pipes' values for drawing on canvas
     w: 55,
     h: 300,
     gap: 85,
     dx: 2,
-    //y value must be -260 <= y <= -40
+    //acceptable y values must be -260 <= y <= -40
     minY: -260,
     maxY: -40,
-    //pipes' x value needs to be width of canvas to render outside
-    //pipes' y value needs to vary randomly within acceptable parameters
+    
+    pipeGenerator: [],
+    
+    reset: function() {
+        this.pipeGenerator = []
+    },
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
         //draw whatever is in the pipeGenerator
@@ -118,30 +121,23 @@ pipes = {
         if (gameState.current == gameState.play) {
             
             //when pipes reach this frame, generate another set
-            if (frame%90 == 0) {
-                // console.log(frame)
+            if (frame%100 == 0) {
                 this.pipeGenerator.push(
                     {
                         //spawn off canvas
+                        //pipes' x value needs to be width of canvas to render outside
                         x: cvs.width,
                         //random y-coordinates
+                        //pipes' y value needs to vary randomly within acceptable parameters
                         y: Math.floor((Math.random() * (this.maxY-this.minY+1)) + this.minY)
                     }
                 )
             }
-                
-                //animate: set of pipes scroll from the right of canvas by decrementing x
+            //iterate for all pipes generated (animation, collision, deletion)
             for (let i = 0; i < this.pipeGenerator.length; i++) {
-                let pg = this.pipeGenerator[i]
-                pg.x -= this.dx
-                // console.log(this.pipeGenerator.length)
-                
-                //delete pipes as they scroll off the canvas (memory management)
-                if(pg.x < -this.w) {
-                    this.pipeGenerator.shift()
-                }
 
-                //PIPE COLLISION
+                //decleration for bird and pipes' parameters (COLLISION)
+                let pg = this.pipeGenerator[i]
                 let b = {
                     left: bird.x - bird.r,
                     right: bird.x + bird.r,
@@ -160,6 +156,18 @@ pipes = {
                     left: pg.x,
                     right: pg.x + this.w
                 }
+
+                //ANIMATION: set of pipes scroll from the right of canvas by decrementing x
+                pg.x -= this.dx
+                
+                //delete pipes as they scroll off the canvas (memory management)
+                if(pg.x < -this.w) {
+                    this.pipeGenerator.shift()
+                        //score up
+                        score.current++
+                    }
+
+                //PIPE COLLISION
                 //collision with top pipe
                 if (b.left < p.right &&
                     b.right > p.left &&
@@ -178,14 +186,14 @@ pipes = {
         }
     }
 }
-//ground
+//ground floor
 ground = {
-    //imgX & imgY is the x,y coordinates of image
+    //object's key-value properties pinpointing its location
     imgX: 276,
     imgY: 0,
     width: 224,
     height: 112,
-    //x,y coordinates of where image should be drawn on canvas
+    //values for drawing on canvas
     x: 0,
     y:cvs.height - 112,
     w:224,
@@ -196,55 +204,163 @@ ground = {
         //image repeat and tile to fit canvas
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x + this.width,this.y,this.w,this.h)
     },
-    //animate:  ground scrolls to the left in a continuous loop when game state is at play
-    //needs to be at the same rate of pipes' scroll speed 
+    //ANIMATION:  ground scrolls to the left in a continuous loop when game state is at play
+    //needs to be at the same rate of pipes' scroll speed
     position: function() {
         if (gameState.current == gameState.getReady) {
             this.x = 0
         }
         if (gameState.current == gameState.play) {
-            //modulus keeps x value infinitely cycling back to zero
+            //modulus keeps this.x value infinitely cycling back to zero
             this.x = (this.x-this.dx) % (this.w/2)
         }
     }
 }
+//map of number images
+map = [
+    num0 = {
+        imgX: 496,
+        imgY: 60,
+        width: 12,
+        height: 18
+    },
+    num1 = {
+        imgX: 135,
+        imgY: 455,
+        width: 10,
+        height: 18
+    },
+    num2 = {
+        imgX: 292,
+        imgY: 160,
+        width: 12,
+        height: 18
+    },
+    num3 = {
+        imgX: 306,
+        imgY: 160,
+        width: 12,
+        height: 18
+    },
+    num4 = {
+        imgX: 320,
+        imgY: 160,
+        width: 12,
+        height: 18
+    },
+    num5 = {
+        imgX: 334,
+        imgY: 160,
+        width: 12,
+        height: 18
+    },
+    num6 = {
+        imgX: 292,
+        imgY: 184,
+        width: 12,
+        height: 18
+    },
+    num7 = {
+        imgX: 306,
+        imgY: 184,
+        width: 12,
+        height: 18
+    },
+    num8 = {
+        imgX: 320,
+        imgY: 184,
+        width: 12,
+        height: 18
+    },
+    num9 = {
+        imgX: 334,
+        imgY: 184,
+        width: 12,
+        height: 18
+    }    
+]
 //current score, top score, tracker
-score = {}
-//bonus: let bird be an img
-//original bird
+score = {
+    current: 0,
+    best: null, // DO THIS STRETCH GOAL
+    //values for drawing mapped numbers on canvas
+    x: cvs.width/2,
+    y: 40,
+    w: 15,
+    h: 25,
+    reset: function() {
+        this.current = 0
+    },
+    //display the score
+    render: function() {
+        if (gameState.current == gameState.play ||
+            gameState.current == gameState.gameOver) {
+            //change current score number value to string value and access each place value
+            let string = this.current.toString()
+            let ones = string.charAt(string.length-1)
+            let tens = string.charAt(string.length-2)
+            let hundreds = string.charAt(string.length-3)
+
+            //if current score has thousands place value: the game is over
+            if (this.current >= 1000) {
+                gameState.current = gameState.gameOver
+            
+            //if current score has ones, tens, and hundreds place value only
+            } else if (this.current >= 100) {
+                ctx.drawImage(theme2, map[ones].imgX,map[ones].imgY,map[ones].width,map[ones].height, ( (this.x-this.w/2) + (this.w) + 3 ),this.y,this.w,this.h)
+
+                ctx.drawImage(theme2, map[tens].imgX,map[tens].imgY,map[tens].width,map[tens].height, ( (this.x-this.w/2) ),this.y,this.w,this.h)
+
+                ctx.drawImage(theme2, map[hundreds].imgX,map[hundreds].imgY,map[hundreds].width,map[hundreds].height, (   (this.x-this.w/2) - (this.w) - 3 ),this.y,this.w,this.h)
+
+            //if current score has ones and tens place value only
+            } else if (this.current >= 10) {
+                ctx.drawImage(theme2, map[ones].imgX,map[ones].imgY,map[ones].width,map[ones].height, ( (this.x-this.w/2) + (this.w/2) + 3 ),this.y,this.w,this.h)
+
+                ctx.drawImage(theme2, map[tens].imgX,map[tens].imgY,map[tens].width,map[tens].height, ( (this.x-this.w/2) - (this.w/2) - 3 ),this.y,this.w,this.h)
+            
+            //if current score has ones place value only
+            } else {
+                ctx.drawImage(theme2, map[ones].imgX,map[ones].imgY,map[ones].width,map[ones].height, ( this.x-this.w/2 ),this.y,this.w,this.h)
+            }
+        }
+    }
+}    
+//bird : YELLOW BIRD
 bird = {
     //object's key-value properties pinpointing its location
-    //animate bird
+    //ANIMATION: bird  //DO THIS STRETCH GOAL
     imgX: 276,
     imgY: 112,
     width: 34,
     height: 26,
-    //x,y coordinates of where image should be drawn on canvas
+    //values for drawing on canvas
     x: 50,
     y: 160,
     w: 34,
     h: 26,
     //bird's radius
-    r: 13,
+    r: 12,
+    //how much the bird flies per flap()
+    fly: 5.25,
+    //gravity increments the velocity per frame
+    gravity: .32,
+    //velocity = pixels the bird will drop in a frame
+    velocity: 0,
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
         //bird is centered on x,y position
         ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
     },
-    fly: 5.5,
+    //bird flies
     flap: function() {
-        // console.log('🐦')
-        //bird flies
         this.velocity = - this.fly
     },
-    //gravity increments rate of velocity @ 50-60 times per sec.
-    gravity: .32,
-    //rate of velocity = pixels the bird will drop in a frame
-    velocity: 0,
     //function checks gameState and updates bird's position
     position: function() {
         if (gameState.current == gameState.getReady) {
             this.y = 160
+
         } else {
 
             //bird falls to gravity
@@ -253,73 +369,136 @@ bird = {
 
             //check collision with ground
             if (this.y+this.h/2 >= cvs.height-ground.h) {
-                // console.log('collision')
                 this.y = cvs.height-ground.h - this.h/2
-                //game is over
-                // gameState.current = gameState.gameOver
+                //then the game is over
+                gameState.current = gameState.gameOver
             }
             
             //bird cannot fly above canvas
-            if (this.y <= 0) {
-                // console.log('oops!')
-                this.y = 2
+            if (this.y-this.h/2 <= 0) {
+                this.y = this.r
             }
-
         }
     }
 }
-//bird v2: blue
-bird2 = {
+//bird1 : RED BIRD
+bird1 = {
     //object's key-value properties pinpointing its location
-    imgX: 87,
-    imgY: 491,
+    //ANIMATION: bird  //DO THIS STRETCH GOAL
+    imgX: 115,
+    imgY: 381,
     width: 17,
     height: 12,
-    //x,y coordinates of where image should be drawn on canvas
+    //values for drawing on canvas
     x: 50,
     y: 160,
     w: 34,
     h: 26,
+    //bird's radius
+    r: 12,
+    //how much the bird flies per flap()
+    fly: 5.25,
+    //gravity increments the velocity per frame
+    gravity: .32,
+    //velocity = pixels the bird will drop in a frame
+    velocity: 0,
     //object's render function that utilizes all above values to draw image onto canvas
     render: function() {
-        ctx.drawImage(theme2, this.imgX,this.imgY,this.width,this.height, this.x,this.y,this.w,this.h)
+        //bird is centered on x,y position
+        ctx.drawImage(theme2, this.imgX,this.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
     },
-    fly: 5.8,
+    //bird flies
     flap: function() {
-        // console.log('🐦🐦')
         this.velocity = - this.fly
     },
-    //gravity increments rate of velocity @ 50-60 times per sec.
-    gravity: .35,
-    //rate of velocity = pixels the bird will drop in a frame
-    velocity: 0,
-    //checks gameState and updates bird's position
+    //function checks gameState and updates bird's position
     position: function() {
         if (gameState.current == gameState.getReady) {
             this.y = 160
+
         } else {
+
             //bird falls to gravity
             this.velocity += this.gravity
             this.y += this.velocity
+
             //check collision with ground
-            if (this.y+this.h >= cvs.height-ground.h) {
-                // console.log('collision')
-                this.y = cvs.height-ground.h - this.h
+            if (this.y+this.h/2 >= cvs.height-ground.h) {
+                this.y = cvs.height-ground.h - this.h/2
+                //then the game is over
+                gameState.current = gameState.gameOver
             }
-            if (this.y <= 0) {
-                // console.log('oops!')
-                this.y = 2
+            
+            //bird cannot fly above canvas
+            if (this.y-this.h/2 <= 0) {
+                this.y = this.r
             }
         }
     }
 }
+//bird2 : BLUE BIRD
+bird2 = {
+    //object's key-value properties pinpointing its location
+    //ANIMATION: bird2  //DO THIS STRETCH GOAL
+    imgX: 87,
+    imgY: 491,
+    width: 17,
+    height: 12,
+    //values for drawing on canvas
+    x: 50,
+    y: 160,
+    w: 34,
+    h: 26,
+    //bird's radius
+    r: 12,
+    //how much the bird flies per flap()
+    fly: 5.25,
+    //gravity increments the velocity per frame
+    gravity: .32,
+    //velocity = pixels the bird will drop in a frame
+    velocity: 0,
+    //object's render function that utilizes all above values to draw image onto canvas
+    render: function() {
+        //bird is centered on x,y position
+        ctx.drawImage(theme2, this.imgX,this.imgY,this.width,this.height, this.x-this.w/2,this.y-this.h/2,this.w,this.h)
+    },
+    //bird flies
+    flap: function() {
+        this.velocity = - this.fly
+    },
+    //function checks gameState and updates bird's position
+    position: function() {
+        if (gameState.current == gameState.getReady) {
+            this.y = 160
+
+        } else {
+
+            //bird falls to gravity
+            this.velocity += this.gravity
+            this.y += this.velocity
+
+            //check collision with ground
+            if (this.y+this.h/2 >= cvs.height-ground.h) {
+                this.y = cvs.height-ground.h - this.h/2
+                //then the game is over
+                gameState.current = gameState.gameOver
+            }
+            
+            //bird cannot fly above canvas
+            if (this.y-this.h/2 <= 0) {
+                this.y = this.r
+            }
+        }
+    }
+}
+//get ready screen
 getReady = {
     //object's key-value properties pinpointing its location
     imgX: 0,
     imgY: 228,
     width: 174,
     height: 160,
-    //x,y coordinates of where image should be drawn on canvas
+    //values for drawing on canvas
     x: cvs.width/2 - 174/2,
     y: cvs.height/2 - 160,
     w: 174,
@@ -332,13 +511,14 @@ getReady = {
         }
     }
 }
+//game over screen
 gameOver = {
     //object's key-value properties pinpointing its location
     imgX: 174,
     imgY: 228,
     width: 226,
     height: 158,
-    //x,y coordinates of where image should be drawn on canvas
+    //values for drawing on canvas
     x: cvs.width/2 - 226/2,
     y: cvs.height/2 - 160,
     w: 226,
@@ -358,12 +538,12 @@ gameOver = {
 let draw = () => {
     //this clears canvas to default bg color
     ctx.fillStyle = '#00bbc4'
-    // console.log(cvs.width, cvs.height)
     ctx.fillRect(0,0, cvs.width,cvs.height)
     //things to draw
     bg.render()
     pipes.render()
     ground.render()
+    score.render()
     bird.render()
     getReady.render()
     gameOver.render()
@@ -376,12 +556,12 @@ let update = () => {
     pipes.position()
     ground.position()
 }
-//animation handler
+//game looper
 let loop = () => {
     draw()
     update()
     frame++
-    //average of AnimationFrame is 50-60fps
+    //average of requestAnimationFrame is 50-60fps
     // requestAnimationFrame(loop)
 }
 loop()
@@ -402,6 +582,8 @@ cvs.addEventListener('click', () => {
     }
     //if game over screen >> go to ready screen
     if (gameState.current == gameState.gameOver) {
+        pipes.reset()
+        score.reset()
         gameState.current = gameState.getReady
     }
 })
@@ -418,36 +600,9 @@ document.body.addEventListener('keydown', (e) => {
         }
         //if game over screen >> go to ready screen
         if (gameState.current == gameState.gameOver) {
+            pipes.reset()
+            score.reset()
             gameState.current = gameState.getReady
         }
     }
 })
-
-/******************
-***** ARCHIVE *****
-******************/
-//function to create new sprite
-let sprite = function(x,y, width,height, color1,color2, num1,num2,num3,num4) {
-    this.x = x
-    this.y = y
-    this.width = width
-    this.height = height
-    this.gravity = 1
-    this.acceleration = .3
-    //linear gradient color:  variable holds gradient values
-    let linear = ctx.createLinearGradient(num1,num2, num3,num4)
-    //set the colors at starting point to ending point
-    linear.addColorStop(0, color1)
-    linear.addColorStop(1, color2)
-    this.render = function() {
-        //fillStyle needs to be defined before drawing
-        ctx.fillStyle = linear
-        //draw the rectangle
-        ctx.fillRect(this.x,this.y, this.width,this.height)
-    }
-    //moves the bird to gravity
-    this.newPosition = function () {
-        this.gravity += this.acceleration
-        this.y += this.gravity
-    }
-}
