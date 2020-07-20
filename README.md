@@ -4,9 +4,7 @@ Flappy bird flew into an endless pipe zone (or is it?) and needs help flying thr
 # ABOUT THE GAME
 A simple side-scrolling game where the player controls a bird to fly between pipes without hitting them.  Flying between each set of pipes scores 1 point and hitting them or the ground ends the game.  See how long you can last and set records.  
 
-Here's a link to the game because github is really bad at making this accessible.
-Thanks for this idea Westin!
-
+Here's a link to the game:
 https://noanonoa.github.io/flappy-bird/
 
 # WIREFRAME  
@@ -25,6 +23,8 @@ https://noanonoa.github.io/flappy-bird/
 (src: https://www.spriters-resource.com/fullview/59894/)  
 ### AUDIO
 (src: https://www.sounds-resource.com/mobile/flappybird/sound/5309/)
+### SCREENSHOT
+![flappy bird screenshot](/img/001-screenshot.png)
 
 # MVP
  * start the game with a 'press button'
