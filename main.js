@@ -3,6 +3,7 @@
 ************************/
 let cvs         //  canvas
 let ctx         //  context'2d'
+let description //  game description
 let theme1      //  original theme
 let theme2      //  original them v2
 let bg          //  background
@@ -26,6 +27,7 @@ const SFX_SWOOSH = new Audio()        //  sound for changing game state
 
 cvs = document.getElementById('game')
 ctx = cvs.getContext('2d')
+description = document.getElementById('description')
 theme1 = new Image()
 theme1.src = 'img/og-theme.png'
 theme2 = new Image()
@@ -654,6 +656,7 @@ gameOver = {
         //only draw this if the game state is on game over
         if (gameState.current == gameState.gameOver) {
             ctx.drawImage(theme1, this.imgX,this.imgY,this.width,this.height, this.x,this.y,this.w,this.h)
+            description.style.visibility = "visible"
         }
     }
 }
@@ -706,6 +709,7 @@ cvs.addEventListener('click', () => {
     if (gameState.current == gameState.play) {
         bird.flap()
         SFX_FLAP.play()
+        description.style.visibility = "hidden"
     }
     //if game over screen >> go to ready screen
     if (gameState.current == gameState.gameOver) {
@@ -726,6 +730,7 @@ document.body.addEventListener('keydown', (e) => {
         if (gameState.current == gameState.play) {
             bird.flap()
             SFX_FLAP.play()
+            description.style.visibility = "hidden"
         }
         //if game over screen >> go to ready screen
         if (gameState.current == gameState.gameOver) {
